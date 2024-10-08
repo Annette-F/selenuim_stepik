@@ -4,9 +4,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromiumService
 from selenium.webdriver.common.by import By
 
-with webdriver.Chrome(service=ChromiumService(ChromeDriverManager().install())) as driver:
-    driver.get("https://stepik.org/course/104774")
-    time.sleep(5)
+
+def test_1():
+    with webdriver.Chrome(service=ChromiumService(ChromeDriverManager().install())) as driver:
+        driver.get("https://stepik.org/course/104774")
+        time.sleep(5)
+
 
 '''
 # Search elements in Selenium
@@ -38,12 +41,13 @@ element_partial_link_text = driver.find_element(By.PARTIAL_LINK_TEXT, 'Cont')
 
 
 # Example code with search element and click on it:
+def test_2():
+    browser = webdriver.Chrome()
+    browser.get('http://parsinger.ru/html/watch/1/1_1.html')
+    browser.find_element(By.ID, "sale_button").click()
 
-browser = webdriver.Chrome()
-browser.get('http://parsinger.ru/html/watch/1/1_1.html')
-button = browser.find_element(By.ID, "sale_button").click()
+    time.sleep(10)
 
-time.sleep(10)
 
 '''
 # Some methods of WebElement
@@ -61,34 +65,38 @@ browser.find_element(By.TAG_NAME, 'a').get_attribute('href')
 browser.find_element(By.CLASS_NAME, 'some_class_name').text
 '''
 
+
 # Work with browser:
-
-# Example 1:
-driver= webdriver.Chrome()
-driver.get('http://parsinger.ru/html/watch/1/1_1.html')
-button = driver.find_element(By.ID, "sale_button")
-time.sleep(2)
-button.click()
-time.sleep(2)
-
-driver.quit()
-
-# example 2:
-try:
-    driver= webdriver.Chrome()
+def test_3():
+    # Example 1:
+    driver = webdriver.Chrome()
     driver.get('http://parsinger.ru/html/watch/1/1_1.html')
     button = driver.find_element(By.ID, "sale_button")
     time.sleep(2)
     button.click()
     time.sleep(2)
-finally:
 
     driver.quit()
 
-# example 3:
-with webdriver.Chrome() as driver:
-    driver.get('http://parsinger.ru/html/watch/1/1_1.html')
-    button = driver.find_element(By.ID, "sale_button")
-    time.sleep(2)
-    button.click()
-    time.sleep(2)
+
+def test_4():
+    # example 2:
+    try:
+        driver = webdriver.Chrome()
+        driver.get('http://parsinger.ru/html/watch/1/1_1.html')
+        button = driver.find_element(By.ID, "sale_button")
+        time.sleep(2)
+        button.click()
+        time.sleep(2)
+    finally:
+        driver.quit()
+
+
+def test_5():
+    # example 3:
+    with webdriver.Chrome() as driver:
+        driver.get('http://parsinger.ru/html/watch/1/1_1.html')
+        button = driver.find_element(By.ID, "sale_button")
+        time.sleep(2)
+        button.click()
+        time.sleep(2)
