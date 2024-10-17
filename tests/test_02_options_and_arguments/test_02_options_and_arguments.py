@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 
 
-def test_1():
+def test_launch_browser_in_hidden_mode():
     options_chrome = webdriver.ChromeOptions()
     options_chrome.add_argument('--headless')
     with webdriver.Chrome(options=options_chrome) as browser:
@@ -15,7 +15,7 @@ def test_1():
 
 
 # Proxy and Selenium
-def test_2():
+def test_recognized_local_ip():
     url = 'https://2ip.ru/'
     with webdriver.Chrome() as browser:
         browser.get(url)
@@ -24,7 +24,7 @@ def test_2():
         time.sleep(5)
 
 
-def test_3():
+def test_using_proxy():
     proxy = '199.60.103.28:80'
     url = 'https://2ip.ru/'
     chrome_options = webdriver.ChromeOptions()
@@ -35,7 +35,7 @@ def test_3():
         time.sleep(5)
 
 
-def test_4():
+def test_using_list_of_proxy():
     proxy_list = ['8.210.83.33:80', '199.60.103.28:80',
                   '103.151.246.38:10001', '199.60.103.228:80',
                   '199.60.103.228:80', '199.60.103.28:80', ]

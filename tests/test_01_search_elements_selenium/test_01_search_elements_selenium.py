@@ -5,7 +5,8 @@ from selenium.webdriver.chrome.service import Service as ChromiumService
 from selenium.webdriver.common.by import By
 
 
-def test_1():
+# Простая установка WebDriver с помощью Webdriver Manager
+def test_main_page_of_course():
     with webdriver.Chrome(service=ChromiumService(ChromeDriverManager().install())) as driver:
         driver.get("https://stepik.org/course/104774")
         time.sleep(5)
@@ -41,7 +42,7 @@ element_partial_link_text = driver.find_element(By.PARTIAL_LINK_TEXT, 'Cont')
 
 
 # Example code with search element and click on it:
-def test_2():
+def test_search_element_by_id():
     browser = webdriver.Chrome()
     browser.get('http://parsinger.ru/html/watch/1/1_1.html')
     browser.find_element(By.ID, "sale_button").click()
@@ -67,7 +68,7 @@ browser.find_element(By.CLASS_NAME, 'some_class_name').text
 
 
 # Work with browser:
-def test_3():
+def test_first_version_close_browser():
     # Example 1:
     driver = webdriver.Chrome()
     driver.get('http://parsinger.ru/html/watch/1/1_1.html')
@@ -79,7 +80,7 @@ def test_3():
     driver.quit()
 
 
-def test_4():
+def test_second_version_close_browser():
     # example 2:
     try:
         driver = webdriver.Chrome()
@@ -92,7 +93,7 @@ def test_4():
         driver.quit()
 
 
-def test_5():
+def test_third_version_close_browser():
     # example 3:
     with webdriver.Chrome() as driver:
         driver.get('http://parsinger.ru/html/watch/1/1_1.html')
