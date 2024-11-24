@@ -1,3 +1,4 @@
+import math
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -229,6 +230,8 @@ Task 1:
 
 Финальный штрих: Скопируйте этот код и вставьте его в специальное поле для ответа на степик.
 '''
+
+
 def test_task_1():
     with webdriver.Chrome() as browser:
         browser.get('https://parsinger.ru/selenium/5.8/1/index.html')
@@ -253,6 +256,7 @@ Task 2:
 Если пин-код верный, вы получите секретный код.
 
 '''
+
 
 def test_tast_2():
     with webdriver.Chrome() as browser:
@@ -282,6 +286,7 @@ Task 3:
 Доклад о проведенной работе: Вставьте полученный секретный код в специальное поле для на степик.
 '''
 
+
 def test_task_3():
     with webdriver.Chrome() as browser:
         browser.get('https://parsinger.ru/selenium/5.8/3/index.html')
@@ -309,6 +314,7 @@ Task 4
 Действие: Извлеките содержимое данного элемента и вставьте в поле для ответа.
 '''
 
+
 def test_task_4():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
@@ -330,6 +336,7 @@ Task 5
 Завершение миссии: Вставьте итоговую сумму в поле для ответа на исходной странице.
 '''
 
+
 def test_task_6():
     with webdriver.Chrome() as browser:
         count = 0
@@ -342,3 +349,72 @@ def test_task_6():
             browser.switch_to.window(window)
             count += int(browser.execute_script("return document.title;"))
         print(count)
+
+
+'''
+Task 6
+Цель: Найти скрытые коды на списках сайтов, обработать их и получить конечный результат.
+
+Сюжет: В глубинах интернета расположены сайты, каждый из которых хранит свой уникальный код. Этот код – лишь часть большой головоломки, которую вам предстоит разгадать.
+
+Шаги к решению:
+
+Подготовка: Загрузите список сайтов, на которых скрыты коды.
+Открытие вкладок: Используя Selenium, откройте каждый сайт в отдельной вкладке.
+Поиск кодов: Пройдитесь по всем вкладкам и найдите чекбокс. Нажмите на него, чтобы получить код.
+Обработка данных: Для каждого полученного кода найдите его квадратный корень.
+Суммирование: Сложите все полученные корни.
+Финальное преобразование: Округлите конечную сумму до 9 знаков после запятой.
+Результат: Вставьте полученное значение в поле для ответа.
+'''
+
+
+def test_task_6():
+    sites = ['http://parsinger.ru/blank/1/1.html', 'http://parsinger.ru/blank/1/2.html',
+             'http://parsinger.ru/blank/1/3.html',
+             'http://parsinger.ru/blank/1/4.html', 'http://parsinger.ru/blank/1/5.html',
+             'http://parsinger.ru/blank/1/6.html', ]
+    with webdriver.Chrome() as browser:
+        result = []
+        for x in sites:
+            browser.execute_script(f"window.open('{x}');")
+        for y in browser.window_handles[1:]:
+            browser.switch_to.window(y)
+            browser.find_element(By.CLASS_NAME, 'checkbox_class').click()
+            code = browser.find_element(By.ID, 'result').text
+            result.append(math.sqrt(int(code)))
+            time.sleep(1)
+        print(round(sum(result), 9))
+
+
+'''
+Task 7
+Цель
+Погружение в кибермир: Используя Selenium, перейдите на указанный сайт.
+
+Поиск зеркальных комнат: На сайте вы обнаружите 9 iframe. В каждом из них скрыта кнопка.
+
+Сбор информации: Нажмите на кнопку в каждом iframe, чтобы получить число. Но помните, с вероятностью 1/9 это число окажется тем самым ключом к сейфу.
+
+Открытие тайны: Вставьте полученное число в поле для проверки. Если удача на вашей стороне, то это число откроет перед вами секретный код в alert.
+
+Вставьте полученный код из alert в поле ответа степик.
+'''
+
+
+def test_task_7():
+    with webdriver.Chrome() as browser:
+        browser.get('https://parsinger.ru/selenium/5.8/5/index.html')
+        frame = browser.find_elements(By.TAG_NAME, 'iframe')
+        for x in frame:
+            browser.switch_to.frame(x.get_attribute('id'))
+            browser.find_element(By.TAG_NAME, 'button').click()
+            dig = browser.find_element(By.ID, 'numberDisplay').text
+            browser.switch_to.default_content()
+            browser.find_element(By.ID, 'guessInput').clear()
+            browser.find_element(By.ID, 'guessInput').send_keys(dig)
+            browser.find_element(By.ID, 'checkBtn').click()
+            try:
+                print(browser.switch_to.alert.text)
+            except:
+                pass
