@@ -239,3 +239,106 @@ def test_task_1():
             if text:
                 print(text)
                 break
+
+
+'''
+Task 2:
+Задание:
+
+Доступ к месту преступления: Используйте Selenium, чтобы получить доступ к веб-сайту, где спрятаны улики.
+
+Внимательное расследование: На сайте находится 100 кнопок. Каждая из них при нажатии активирует всплывающее alert окно с пин-кодом.
+
+Расшифровка: Под кнопками расположено текстовое поле, которое проверяет пин-коды. Ваша задача — ввести пин-код и проверить его. 
+Если пин-код верный, вы получите секретный код.
+
+'''
+
+def test_tast_2():
+    with webdriver.Chrome() as browser:
+        browser.get('https://parsinger.ru/selenium/5.8/2/index.html')
+        button = browser.find_elements(By.CLASS_NAME, 'buttons')
+        for i in button:
+            i.click()
+            pin = browser.switch_to.alert.text
+            alert = browser.switch_to.alert
+            alert.accept()
+            browser.find_element(By.ID, 'input').send_keys(pin)
+            browser.find_element(By.XPATH, '//input[@value="Проверить"]').click()
+            alert = browser.find_element(By.ID, 'result').text
+            if 'Неверный пин-код' not in alert:
+                print(alert)
+
+
+'''
+Task 3:
+Цель
+Место преступления: Откройте указанный сайт с помощью Selenium.
+
+Улики на месте: На сайте вы найдете список пин-кодов. Однако среди них лишь один правильный.
+
+Расшифровка: Для проверки каждого пин-кода используйте кнопку "Проверить". При верном пин-коде вы получите секретный код.
+
+Доклад о проведенной работе: Вставьте полученный секретный код в специальное поле для на степик.
+'''
+
+def test_task_3():
+    with webdriver.Chrome() as browser:
+        browser.get('https://parsinger.ru/selenium/5.8/3/index.html')
+        pin_codes = browser.find_elements(By.CLASS_NAME, 'pin')
+        for pin in pin_codes:
+            extracted_text = pin.text
+            browser.find_element(By.TAG_NAME, 'input').click()
+            check = browser.switch_to.alert
+            check.send_keys(extracted_text)
+            check.accept()
+            alert = browser.find_element(By.ID, 'result').text
+            if 'Неверный пин-код' not in alert:
+                print(alert)
+
+
+'''
+Task 4
+Цель: Проанализировать содержимое сайта, имея строгие рамки видимой области браузера.
+
+Шаги к решению:
+
+Инициализация: Запустите браузер через Selenium и загрузите страницу.
+Настройка размеров: Откройте окно браузера так, чтобы рабочая (видимая) область страницы точно соответствовала 555x555 пикселям. Не забудьте учесть размеры рамок и панелей браузера при расчете!
+Анализ: Когда условие будет выполнено секретный ключ появится в id="result";
+Действие: Извлеките содержимое данного элемента и вставьте в поле для ответа.
+'''
+
+def test_task_4():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    with webdriver.Chrome() as browser:
+        browser.get('https://parsinger.ru/window_size/1/')
+        browser.set_window_size(555 + 16, 555 + 147)
+        result = browser.find_element(By.ID, 'result').text
+        print(result)
+
+
+'''
+Task 5
+Шаги к решению:
+
+Погружение: Откройте сайт с помощью Selenium.
+Активация тайных порталов: Нажимая на каждую из 10 кнопок, вы активируете ворота в другую вкладку. Это ваш шанс найти одну из частей кода.
+Исследование: В каждой новой вкладке ищите в title число — ваш ключ к решению.
+Сбор информации: Соберите все 10 чисел и сложите их.
+Завершение миссии: Вставьте итоговую сумму в поле для ответа на исходной странице.
+'''
+
+def test_task_6():
+    with webdriver.Chrome() as browser:
+        count = 0
+        browser.get('https://parsinger.ru/blank/3/index.html')
+        buttons = browser.find_elements(By.CLASS_NAME, 'buttons')
+        for button in buttons:
+            button.click()
+        windows = browser.window_handles
+        for window in windows[1:]:
+            browser.switch_to.window(window)
+            count += int(browser.execute_script("return document.title;"))
+        print(count)
